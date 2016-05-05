@@ -95,7 +95,7 @@ app.controller("main",function($scope){
 	$scope.homevisible = false;
 	$scope.infovisible = false;
 	$scope.pinboardsvisible = false;
-	$("#infobekijkfotos").fadeOut(1);
+	$scope.infopinboard =false;
 	}
 
 //*************************************************************
@@ -174,7 +174,7 @@ $scope.pinboardladen = function(name){
 				if (pinboardsarrey[i].pinboard_ID === name) {
 					$scope.infonaam = pinboardsarrey[i].pinboard_ID;
 					$scope.infoaantalfotos = pinboardsarrey[i].total_Photos;
-					$("#infobekijkfotos").fadeIn(1000);
+					$("#infopinboard").fadeIn(1000);
 				};
 			};
 		}
