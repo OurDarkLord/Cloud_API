@@ -22,19 +22,26 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
               $('#direct_upload_jquery').fadeIn(600);
             }, 700);
             
-            
           });
           
         };
       });
     }
 
-    $scope.files = {};
-    $scope.updateTitle = function(){
-      var uploadParams = $scope.widget.fileupload('option', 'formData');
-      uploadParams["context"] = "photo=" + $scope.title;
-      $scope.widget.fileupload('option', 'formData', uploadParams);
-    };
+    $scope.submit = function(){
+      var PinboardDirectory  = ref.child("pinboards/" + pinboard_ID);
+      PinboardDirectory.push({
+        "titel" : $scope.titel,
+        "beschrijving" : $scope.beschrijving, 
+        "url" : $scope.file.result.secure_url
+
+      });
+      console.log($scope.file);
+
+      console.log($scope.file.result.secure_url);
+
+    }
+    $scope.file = {};
 
     $scope.widget = $(".cloudinary_fileupload")
       .unsigned_cloudinary_upload(cloudinary.config().upload_preset, {tags: 'myphotoalbum', context:'photo='}, {
@@ -48,7 +55,6 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
         dropZone: "#direct_upload_jquery",
         start: function (e) {
           $scope.status = "Starting upload...";
-          $scope.files = {};
           $scope.$apply();
         },
         fail: function (e, data) {
@@ -58,10 +64,8 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
       })
       .on("cloudinaryprogress", function (e, data) {
         var name = data.files[0].name;
-        var file = $scope.files[name] || {};
-        file.progress = Math.round((data.loaded * 100.0) / data.total);
-        file.status = "Uploading... " + file.progress + "%";
-        $scope.files[name] = file;
+        $scope.file.progress = Math.round((data.loaded * 100.0) / data.total);
+        $scope.file.status = "Uploading... " + $scope.file.progress + "%";
         $scope.$apply();
         })
       .on("cloudinaryprogressall", function (e, data) {
@@ -74,17 +78,12 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
         data.result.context = {custom: {photo: $scope.title}};
         $scope.result = data.result;
         var name = data.files[0].name;
-        var file = $scope.files[name] ||{};
-        file.name = name;
-        file.result = data.result;
-        $scope.files[name] = file;
+        $scope.file.name = name;
+        $scope.file.result = data.result;
         $rootScope.photos.push(data.result);
         $scope.$apply();
       }).on("cloudinaryfail", function(e, data){
-          var file = $scope.files[name] ||{};
-          file.name = name;
-          file.result = data.result;
-          $scope.files[name] = file;
-
+          $scope.file.name = name;
+          $scope.file.result = data.result;
         });
   }]);

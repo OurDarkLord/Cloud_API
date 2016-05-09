@@ -46,32 +46,30 @@
 		</div>
 
 	
-		   <div id="direct_upload_jquery"
-			        ng-model="files">
+		   <div id="direct_upload_jquery" >
 			    <h1>New Photo</h1>
 			    <p>You can also drag and drop an image file into the dashed area.</p>
 			    <form>
 			        <div class="form_line">
 			            <label path="title">Title:</label>
 			            <div class="form_controls">
-			                <input type="text" class="form-control" placeholder="Title" ng-model="title" ng-change="updateTitle()"/>
-			                <input type="text" class="form-control" placeholder="beschrijving"/>
+			                <input type="text" class="form-control" placeholder="Title"  ng-model="titel"/>
+			                <input type="text" class="form-control" placeholder="beschrijving" ng-model="beschrijving"/>
 			            </div>
 			        </div>
 			        <div class="form_line">
 			            <label>Image:</label>
 			            <div class="form_controls">
 			                <div class="upload_button_holder">
-			                    <a href="#" class="upload_button">Upload</a>
-			                    <input type="file" name="file" class="cloudinary_fileupload" multiple ng-model="$parent.files">
+			                    <input type="file" name="file" class="cloudinary_fileupload">
 			                </div>
-
 			            </div>
 			        </div>
 
+
 			    </form>
 			    <h2>Status</h2>
-			    <div class="file" ng-repeat="file in files">
+			    <div class="file" >
 
 			            <h3>{{file.name}}</h3>
 			            <div class="status">{{file.status}}</div>
@@ -85,15 +83,9 @@
 			                    </div>
 			                </div>
 			            </div>
-			        <div class="info">
-			          <table>
-			            <tr ng-repeat="(key, value) in file.result">
-			              <td> {{key}} </td> <td> {{ value }} </td>
-			            </tr>
-			          </table>
-			        </div>
-
+			        
 			    </div>
+			    <button type="button" class="btn btn-success" ng-click= "submit()">Submit</button> 
 			</div>
 		
 
