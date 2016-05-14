@@ -62,7 +62,9 @@ app.controller("main",function($scope){
 		nonactiven();
 		document.getElementById("LiPinboards").className = "active";
 		getpinboards($scope);
+		$scope.pinboardvisible = false;
 		$scope.pinboardsvisible = true;
+		$scope.pinboardsettingsvisible = true;
 
 	}
 	$scope.helpshow = function(){
@@ -74,7 +76,7 @@ app.controller("main",function($scope){
 		document.getElementById("LiInfo").className = "active";
 		$scope.infovisible = true;
 	}
-	$scope.LogMeInshow = function(){
+	$scope.LogMeIn = function(){
         FB.login(function(response){
         	loginFB(response);
         },{scope: 'email'})
@@ -96,6 +98,7 @@ app.controller("main",function($scope){
 	$scope.infovisible = false;
 	$scope.pinboardsvisible = false;
 	$scope.infopinboard =false;
+	
 	}
 
 //*************************************************************
@@ -103,9 +106,30 @@ app.controller("main",function($scope){
 // add pinboard ***********************************************
 
 $scope.addpinboard = function(){
-	var currentpinboards = 0;
+
+	var currentpinboards = countpinboards();
+	if (currentpinboards<=4) {
+		var idpinboard = makeid();
+		var iduniek = checkID(idpinboard);
+
+		if (!iduniek) {
+			addpinboardtodB(idpinboard, currentpinboards);
+		}
+		else{
+			idpinboard = makeid();
+			iduniek = checkID(idpinboard);
+			if (!iduniek) {
+				addpinboardtodB(idpinboard, currentpinboards);
+			};
+		}
+	}else{
+		alert("you can have only 5 pinboards");
+	}
+
+}
+
+function addpinboardtodB(idpinboard, currentpinboards){
 	var pinboardbase = ref.child("pinboards");
-	var idpinboard = makeid();
 	var newpinboard = pinboardbase.child(idpinboard);
 	newpinboard.update({
 		"user_ID" : postID
@@ -116,14 +140,25 @@ $scope.addpinboard = function(){
 		"pinboard_ID" : idpinboard,
 		"total_Photos" : 0
 	});
-	currentpinboards = countpinboards();
+	currentpinboards ++;
+
 	var userref = ref.child("users/"+postID);
 	userref.update({
-		"totalpinboards": currentpinboards
+		"totalpinboards": currentpinboards 
 	});
-
-
 }
+function checkID(idpinboard){
+	var pinboards = ref.child("pinboards");
+	pinboards.orderByKey().equalTo(idpinboard).on("value" , function(snapshot){
+	    var Post = snapshot.val();
+        if (Post!== null) {
+         	return false;
+          }else{
+          	return true;
+          }
+	});
+}
+
 function makeid()
 {
     var text = "";
@@ -191,6 +226,24 @@ function countpinboards(){
 	return amountpinboards;
 }
 
+//************************** laad de pinboard ********************
+
+$scope.bekijkpinwall = function(){
+	$scope.pinboardsettingsvisible = false;
+	$scope.pinboardvisible = true;
+
+	var $afbeelding = document.createElement("div");
+	//$afbeelding.class = 'afbeeldingpinboard';  -> nope werkt ni
+	$afbeelding.id= 'afbeeldingpinboard';
+	$('.pinboardweergeven').append($afbeelding);
+	var $img = document.createElement("img");
+	$img.src = "images/pinboard2.png";
+	$("#afbeeldingpinboard").append($img);
+	
+
+
+}
+
 
 //************************************************************
 
@@ -212,6 +265,7 @@ $scope.adduser = function(){
 });
 
 function loginFB(response){
+	console.log("login");
 	if (response.status === 'connected') {
     	FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,email'}, function(response) {
 			$("#loginName").text(response.first_name);
