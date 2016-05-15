@@ -29,16 +29,29 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
     }
 
     $scope.submit = function(){
-      var PinboardDirectory  = ref.child("pinboards/" + pinboard_ID);
-      PinboardDirectory.push({
-        "titel" : $scope.titel,
-        "beschrijving" : $scope.beschrijving, 
-        "url" : $scope.file.result.secure_url
+      if ($scope.file.result.secure_url== "" ) {
+         $scope.uploaderror = "upload a picture";
+      }
+      else if ($scope.titel != null ,$scope.beschrijving!= null) {
 
-      });
-      console.log($scope.file);
+        var PinboardDirectory  = ref.child("pinboards/" + pinboard_ID);
+        PinboardDirectory.push({
+          "titel" : $scope.titel,
+          "beschrijving" : $scope.beschrijving, 
+          "url" : $scope.file.result.secure_url
 
-      console.log($scope.file.result.secure_url);
+        });
+        console.log($scope.file);
+
+        console.log($scope.file.result.secure_url);
+        $('#direct_upload_jquery').fadeOut(600);
+        setTimeout(function(){
+                $('#direct_upload_jquery').remove();
+               $('#done').fadeIn(600);
+              }, 700);
+       }else{
+         $scope.uploaderror = "upload a picture";
+       }     
 
     }
     $scope.file = {};
