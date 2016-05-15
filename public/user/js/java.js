@@ -2,8 +2,9 @@ var ref = new Firebase('https://photopinwall.firebaseio.com/');
 var app = angular.module("app", []);
 var postID;
 var pinboardsarrey = [];
-
-
+var $IDphoto = 0;
+var $IDphotoremove = 0;
+var $IDcurrentPinwall;
 
 $(function()
 	{ 
@@ -15,10 +16,6 @@ $(function()
 			$(".dropdown-menu").fadeOut("fast"); 
 		}); 
 		$("[data-toggle='tooltip']").tooltip({animation:true}); 
-
-
-
-
 
 	});
 //javascript sdk facebook
@@ -44,6 +41,14 @@ window.fbAsyncInit = function() {
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
 //*********************************************
+
+
+
+
+
+
+
+//************************************************
 
 app.controller("main",function($scope){
 	$scope.testvisible = false;
@@ -103,7 +108,7 @@ app.controller("main",function($scope){
 
 //*************************************************************
 
-// add pinboard ***********************************************
+//****************************** add pinboard ***********************************************
 
 $scope.addpinboard = function(){
 
@@ -169,7 +174,7 @@ function makeid()
 
     return text;
 }
-// haalt al de pinboards op **************************************************
+//*********************************** haalt al de pinboards op **************************************************
 
 function getpinboards($scope){
 
@@ -203,19 +208,20 @@ function getpinboards($scope){
 	});
 }
 
-// als men op een pinboard klikt *********************************************
+//*********************************** als men op een pinboard klikt *********************************************
 $scope.pinboardladen = function(name){
 			for (var i = pinboardsarrey.length - 1; i >= 0; i--) {
 				if (pinboardsarrey[i].pinboard_ID === name) {
 					$scope.infonaam = pinboardsarrey[i].pinboard_ID;
 					$scope.infoaantalfotos = pinboardsarrey[i].total_Photos;
 					$("#infopinboard").fadeIn(1000);
+					$IDcurrentPinwall = pinboardsarrey[i].pinboard_ID;
 				};
 			};
 		}
 
 
-// functie die de aantal pinboards telt **************************************
+//*************************** functie die de aantal pinboards telt **************************************
 
 function countpinboards(){
 	var amountpinboards;
@@ -231,22 +237,70 @@ function countpinboards(){
 $scope.bekijkpinwall = function(){
 	$scope.pinboardsettingsvisible = false;
 	$scope.pinboardvisible = true;
+	console.log($IDcurrentPinwall);
 
+	var currentpinboard = ref.child("pinboards/"+ $IDcurrentPinwall);
+	currentpinboard.on("child_added", function(snapshot) {
+		var newPost = snapshot.val();
+		if (newPost.url != null) {
+			addPhotoToWall(newPost.titel,newPost.beschrijving,newPost.url);
+		};
+		
+		console.log("beschrijving: " + newPost.beschrijving);
+		console.log("titel: " + newPost.titel);
+		console.log("url" + newPost.url);
+	});
+
+
+}
+function addPhotoToWall(titel, beschrijving, url){
 	var $afbeelding = document.createElement("div");
 	//$afbeelding.class = 'afbeeldingpinboard';  -> nope werkt ni
-	$afbeelding.id= 'afbeeldingpinboard';
-	$('.pinboardweergeven').append($afbeelding);
-	var $img = document.createElement("img");
-	$img.src = "images/pinboard2.png";
-	$("#afbeeldingpinboard").append($img);
-	
+	$afbeelding.id= 'afbeeldingpinboard' + $IDphoto;
+	var randomnumber = Math.floor((Math.random() * 20) - 10); 
+	var $rotatiepic = 360 + randomnumber;
 
+	$afbeelding.style.cssText = 'width: 35%; height: 60%; position: absolute; left: 35%; top:20%; background-color: white; transform: rotate('+$rotatiepic+'deg);  box-shadow: 6px 6px 25px #000000; display: none;';
+	$('.pinboardpictures').append($afbeelding);
+	var $header = $("<h2>").text(titel);
+
+	$("#afbeeldingpinboard" + $IDphoto).append($header);
+	var $comment = $("<p>").text(beschrijving);
+	
+	$("#afbeeldingpinboard" + $IDphoto).append($comment);
+	var $img = document.createElement("img");
+	$img.src = url;
+	$img.style.cssText = 'position: absolute; max-width: 90%; max-height: 70%; left: 5%; right: 5%; top: 25%; margin: auto;';
+	$("#afbeeldingpinboard" + $IDphoto).append($img);
+
+	$("#afbeeldingpinboard" + $IDphoto).fadeIn(800);
+	$IDphoto ++;
+
+	if ($IDphoto>5) {
+		removePicFromPinboard();
+	};
 
 }
 
 
-//************************************************************
 
+
+
+//*****************************foto van de pinboard verwijderen *******************
+function removePicFromPinboard(){
+	$("#afbeeldingpinboard"+$IDphotoremove).remove();
+	$IDphotoremove++;
+	console.log($IDphotoremove);
+}
+
+
+//************************************************************
+//************************************laad de foto's***********************
+
+$scope.pinboardbekijkfotos = function(infonaam){
+	console.log(infonaam);
+}
+//**************************************************************************
 
 // test *****************************************
 $scope.data = "test angular";

@@ -56,14 +56,20 @@
 
 			      <p id="infonaam">{{infonaam}}</p> 
 			      <p id="infoaantalfotos">aantal foto's = {{infoaantalfotos}}</p>
-			      <button  type="button" class="btn btn-success" id="infobekijkfotos" ng-click= 'pinboardbekijkfotos({{infonaam}})' > bekijk foto</button> </br>
+			      <button  type="button" class="btn btn-success" id="infobekijkfotos" ng-click= 'pinboardbekijkfotos("{{infonaam}}")' > bekijk foto</button> </br>
 			      <button type="button" class="btn btn-success" id="bekijkpinwall" ng-click= 'bekijkpinwall()' > go to the pinwall</button></br>
-			      <button type="button" class="btn btn-success" id="deletepinwall" ng-click= 'deletepinwall({{infonaam}})' > delete pinwall</button>
+			      <button type="button" class="btn btn-success" id="deletepinwall" ng-click= 'deletepinwall("test")' > delete pinwall</button>
 			      
 				</div>
 			</div>
 			<div ng-show="pinboardvisible" class="pinboardweergeven">
 				<img src="images/pinboard.png" class= "pinboardimg">
+				
+				<div class="pinboardpictures"></div>
+				<div class="pinboardinfo">
+					<H1>go to photopinwall.firebaseapp.com </H1>
+					<h1>enter code:{{infonaam}}</h1>
+				</div>
 
 			</div>
 			
