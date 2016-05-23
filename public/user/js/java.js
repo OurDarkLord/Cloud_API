@@ -5,6 +5,10 @@ var pinboardsarrey = [];
 var $IDphoto = 0;
 var $IDphotoremove = 0;
 var $IDcurrentPinwall;
+var $widthPhotoPinboard = 35;
+var $heightPhotoPinboard = 60;
+var $fontSizeTitelFoto = 35;
+
 
 $(function()
 	{ 
@@ -44,10 +48,6 @@ window.fbAsyncInit = function() {
 
 
 
-
-
-
-
 //************************************************
 
 app.controller("main",function($scope){
@@ -55,9 +55,10 @@ app.controller("main",function($scope){
 	$scope.homevisible = true;
 	$scope.infovisible = false;
 	$scope.pinboardsvisible = false;
+	$scope.navbarVisible = true;
 
 
-// navbar ***************************************************
+//************************* navbar ***************************************************
 	$scope.homeshow = function(){
 		nonactiven();
 		document.getElementById("LiHome").className = "active";
@@ -235,25 +236,24 @@ function countpinboards(){
 //************************** laad de pinboard ********************
 
 $scope.bekijkpinwall = function(){
+	removeAllPicsFromPinboard();
 	$scope.pinboardsettingsvisible = false;
 	$scope.pinboardvisible = true;
 	console.log($IDcurrentPinwall);
+	loadAllPics();
 
+}
+//*****************************laad al de foto's**********************************************
+function loadAllPics(){
 	var currentpinboard = ref.child("pinboards/"+ $IDcurrentPinwall);
 	currentpinboard.on("child_added", function(snapshot) {
 		var newPost = snapshot.val();
 		if (newPost.url != null) {
 			addPhotoToWall(newPost.titel,newPost.beschrijving,newPost.url);
 		};
-		
-		console.log("beschrijving: " + newPost.beschrijving);
-		console.log("titel: " + newPost.titel);
-		console.log("url" + newPost.url);
 	});
 }
-// Popup ***************************************************
-
-
+//********************* foto op pinboard toevoegen ***************************************************
 
 function addPhotoToWall(titel, beschrijving, url){
 	var $afbeelding = document.createElement("div");
@@ -262,14 +262,24 @@ function addPhotoToWall(titel, beschrijving, url){
 	var randomnumber = Math.floor((Math.random() * 20) - 10); 
 	var $rotatiepic = 360 + randomnumber;
 
-	$afbeelding.style.cssText = 'width: 35%; height: 60%; position: absolute; left: 35%; top:20%; background-color: white; transform: rotate('+$rotatiepic+'deg);  box-shadow: 6px 6px 25px #000000; display: none;';
+	$afbeelding.style.cssText = 'width: '+$widthPhotoPinboard+'%; height: +'+$heightPhotoPinboard+'%; position: absolute; left: '+(52-($widthPhotoPinboard/2))+'%; top:'+(50-($heightPhotoPinboard/2))+'%; background-color: white; transform: rotate('+$rotatiepic+'deg);  box-shadow: 6px 6px 25px #000000; display: none;';
 	$('.pinboardpictures').append($afbeelding);
-	var $header = $("<h2>").text(titel);
-
-	$("#afbeeldingpinboard" + $IDphoto).append($header);
-	var $comment = $("<p>").text(beschrijving);
 	
-	$("#afbeeldingpinboard" + $IDphoto).append($comment);
+	var $textbox = document.createElement("div");
+
+	$textbox.id= 'textboxImage' + $IDphoto ;
+	$textbox.style.cssText = 'font-size: '+$fontSizeTitelFoto+'px;';
+	$("#afbeeldingpinboard" + $IDphoto).append($textbox);
+
+	var $header = $("<h2>").text(titel);
+	
+	$("#textboxImage" + $IDphoto).append($header);
+	var $comment = $("<p>").text(beschrijving);
+	$("#textboxImage" + $IDphoto).append($comment);
+
+
+	
+	
 	var $img = document.createElement("img");
 	$img.src = url;
 	$img.style.cssText = 'position: absolute; max-width: 90%; max-height: 70%; left: 5%; right: 5%; top: 25%; margin: auto;';
@@ -280,22 +290,60 @@ function addPhotoToWall(titel, beschrijving, url){
 
 	if ($IDphoto>5) {
 		removePicFromPinboard();
+
 	};
 
 }
-
-
-
-
 
 //*****************************foto van de pinboard verwijderen *******************
 function removePicFromPinboard(){
 	$("#afbeeldingpinboard"+$IDphotoremove).remove();
 	$IDphotoremove++;
+}
+//********************************Al de foto's van het pinbord verwijderen*******************************
+function removeAllPicsFromPinboard(){
 	console.log($IDphotoremove);
+	console.log($IDphoto);
+	for (var i = $IDphoto - $IDphotoremove; i > 0; i--) {
+		console.log(i);
+		removePicFromPinboard();
+		
+	};
+	$IDphotoremove = 0;
+	$IDphoto=0;
+
 }
 
+//***************************fullscreen bij het bekijken van de pinboard*********************************
 
+$scope.fullscreen = function(){
+	var imageFullScreen = document.getElementById('fullscreenImg');
+	if ($scope.navbarVisible) {
+		$scope.navbarVisible = false;
+		imageFullScreen.src = "images/nofullscreen.png";
+	}else{
+		$scope.navbarVisible = true;
+		imageFullScreen.src = "images/fullscreen.png";
+	}
+	
+}
+//*********************************zoom in **********************
+$scope.zoomin = function(){
+	removeAllPicsFromPinboard();
+	$widthPhotoPinboard += 5;
+	$heightPhotoPinboard +=5;
+	$fontSizeTitelFoto += 5;
+
+	loadAllPics();
+}
+//*********************************zoom out **********************
+$scope.zoomout = function(){
+	removeAllPicsFromPinboard();
+	$widthPhotoPinboard -= 5;
+	$heightPhotoPinboard -=5;
+	$fontSizeTitelFoto -= 5;
+	loadAllPics();
+}
 //************************************************************
 //************************************laad de foto's***********************
 

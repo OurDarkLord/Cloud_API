@@ -17,7 +17,7 @@
 	</head>
 	<body ng-app="app" ng-controller="main">
 		
-	  <nav class="navbar navbar-default">
+	  <nav class="navbar navbar-default" ng-show="navbarVisible">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -55,22 +55,25 @@
 				<div class="container">
 
  				 <!-- Modal -->
-  				<div class="modal fade" id="myModal" role="dialog">
-    			<div class="modal-dialog">
-				<div class="modal-content">
-      			<div class="modal-header">
-        		<button type="button" class="close" data-dismiss="modal"></button>
-        		<p class="modal-title" id="infonaam">{{infonaam}}</p>
-      			</div>
-      			<div class="modal-body">
-        		<p id="infoaantalfotos">aantal foto's = {{infoaantalfotos}}</p>
-			      <button  type="button" class="btn btn-success" id="infobekijkfotos" ng-click= 'pinboardbekijkfotos("{{infonaam}}")' > bekijk foto</button> </br>
-			      <button type="button" class="btn btn-success" id="bekijkpinwall" ng-click= 'bekijkpinwall()' > go to the pinwall</button></br>
-			      <button type="button" class="btn btn-success" id="deletepinwall" ng-click= 'deletepinwall("test")' > delete pinwall</button>
-      			</div>
-      			<div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      			</div>
+	  				<div class="modal fade" id="myModal" role="dialog">
+		    			<div class="modal-dialog">
+							<div class="modal-content">
+				      			<div class="modal-header">
+					        		<button type="button" class="close" data-dismiss="modal"></button>
+					        		<p class="modal-title" id="infonaam">{{infonaam}}</p>
+				      			</div>
+				      			<div class="modal-body">
+					        		<p id="infoaantalfotos">aantal foto's = {{infoaantalfotos}}</p>
+								      <button  type="button" class="btn btn-success" id="infobekijkfotos" ng-click= 'pinboardbekijkfotos("{{infonaam}}")' > bekijk foto</button> </br>
+								      <button data-dismiss="modal" type="button" class="btn btn-success" id="bekijkpinwall" ng-click= 'bekijkpinwall()' > go to the pinwall</button></br>
+								      <button type="button" class="btn btn-success" id="deletepinwall" ng-click= 'deletepinwall("test")' > delete pinwall</button>
+			      				</div>
+				      			<div class="modal-footer">
+				        			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      			</div>
+	    					</div>
+	    				</div>	
+    				</div>
     			</div>
 			</div>
 			<div ng-show="pinboardvisible" class="pinboardweergeven">
@@ -82,9 +85,9 @@
 					<h1>enter code:{{infonaam}}</h1>
 				</div>
 				<div class="pinboardSettings">
-					<img src="images/fullscreen.png"></br>
-					<img src="images/zoom+.png"></br>
-					<img src="images/zoom-.png">
+					<img src="images/fullscreen.png" ng-click= 'fullscreen()' id ='fullscreenImg' ></br>
+					<img src="images/zoom+.png" ng-click= 'zoomin()'></br>
+					<img src="images/zoom-.png" ng-click= 'zoomout()'>
 				</div>
 
 			</div>

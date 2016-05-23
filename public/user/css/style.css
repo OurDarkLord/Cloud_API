@@ -54,11 +54,16 @@ img.make-it-fit {
 
 .pinboardpictures h2{
 	margin-left: 5%;
+	font-size: 100%;
+	margin-bottom: 0%;
 }
 
 .pinboardpictures p{
 	margin-right: 5%; 
 	text-align: right;
+	font-size: 50%;
+	margin-bottom: 0%;
+
 }
 
 .pinboardinfo h1{
@@ -82,7 +87,7 @@ img.make-it-fit {
 	max-width: 2%;
 }
 .pinboardSettings img{
-	opacity: 0.5;
+	opacity: 0.4;
 	width: 100%;
 	height: 33%;
 
