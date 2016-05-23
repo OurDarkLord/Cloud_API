@@ -250,9 +250,11 @@ $scope.bekijkpinwall = function(){
 		console.log("titel: " + newPost.titel);
 		console.log("url" + newPost.url);
 	});
-
-
 }
+// Popup ***************************************************
+
+
+
 function addPhotoToWall(titel, beschrijving, url){
 	var $afbeelding = document.createElement("div");
 	//$afbeelding.class = 'afbeeldingpinboard';  -> nope werkt ni
@@ -358,6 +360,8 @@ function getInfo() {
 		document.getElementById('status').innerHTML = response.id;
 	});
 }
+
+
 
 
 

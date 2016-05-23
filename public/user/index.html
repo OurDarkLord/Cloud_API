@@ -50,17 +50,27 @@
 			<div ng-show="pinboardsettingsvisible">
 
 				<button type="button" class="btn btn-primary" ng-click= "addpinboard()">Add pinboard</button> 
-				<ul ng-repeat="pinboard in pinboards" ng-click= 'pinboardladen(pinboard.pinboard_ID)' id='{{pinboard.pinboard_ID}}' class = 'pinboardlist'> <a href="#" id="linkpinboard">{{pinboard.pinboard_ID}}</a> </ul>
+				<ul ng-repeat="pinboard in pinboards" ng-click= 'pinboardladen(pinboard.pinboard_ID)' id='{{pinboard.pinboard_ID}}' class = 'pinboardlist' data-toggle="modal" data-target="#myModal"> <a href="#" id="linkpinboard">{{pinboard.pinboard_ID}}</a> </ul>
+				<div class="container">
 
-				<div id="infopinboard" ng-show="infopinboard">
-
-			      <p id="infonaam">{{infonaam}}</p> 
-			      <p id="infoaantalfotos">aantal foto's = {{infoaantalfotos}}</p>
+ 				 <!-- Modal -->
+  				<div class="modal fade" id="myModal" role="dialog">
+    			<div class="modal-dialog">
+				<div class="modal-content">
+      			<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal"></button>
+        		<p class="modal-title" id="infonaam">{{infonaam}}</p>
+      			</div>
+      			<div class="modal-body">
+        		<p id="infoaantalfotos">aantal foto's = {{infoaantalfotos}}</p>
 			      <button  type="button" class="btn btn-success" id="infobekijkfotos" ng-click= 'pinboardbekijkfotos("{{infonaam}}")' > bekijk foto</button> </br>
 			      <button type="button" class="btn btn-success" id="bekijkpinwall" ng-click= 'bekijkpinwall()' > go to the pinwall</button></br>
 			      <button type="button" class="btn btn-success" id="deletepinwall" ng-click= 'deletepinwall("test")' > delete pinwall</button>
-			      
-				</div>
+      			</div>
+      			<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      			</div>
+    			</div>
 			</div>
 			<div ng-show="pinboardvisible" class="pinboardweergeven">
 				<img src="images/pinboard.png" class= "pinboardimg">
