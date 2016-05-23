@@ -1,15 +1,14 @@
 div.homeTab {
-
     text-align: center;
-
-
 }
+
 img.make-it-fit {
     max-width: 99%;
     max-height: 99%;
     width: 100%;
     height: 100%;
 }
+
 #infopinboard{
 	float: right;
 	overflow: auto;
@@ -18,21 +17,19 @@ img.make-it-fit {
 
 .pinboardlist{
 	width: 200px;
-
 }
 
 .pinboardimg{
 	width: 100%;
 	height: 100vh;
-
 }
+
 .pinboardweergeven{
 	width: 100%;
 	height: 100%;
 	position: relative;
 	left: 0px;
 	top:0px;
-
 }
 
 #afbeeldingpinboard{
@@ -43,9 +40,8 @@ img.make-it-fit {
 	top:20%;
 	background-color: white;
 	transform: rotate(2deg);
-
-
 }
+
 #afbeeldingpinboard img{
 	position: absolute;
 	max-width: 90%;
@@ -54,15 +50,17 @@ img.make-it-fit {
 	right: 5%;
 	top: 25%;
     margin: auto;
-
 }
+
 .pinboardpictures h2{
 	margin-left: 5%;
 }
+
 .pinboardpictures p{
 	margin-right: 5%; 
 	text-align: right;
 }
+
 .pinboardinfo h1{
 	color: white;
 	position: absolute;
@@ -70,10 +68,12 @@ img.make-it-fit {
 	left: 5%;
 	transform: rotate(353deg);
 	text-shadow: 2px 2px #000000;
-
 }
+
 .pinboardinfo h1:nth-child(2) {
 	float: right;
 	left: 75%;
 	transform: rotate(7deg);
 }
+
+
