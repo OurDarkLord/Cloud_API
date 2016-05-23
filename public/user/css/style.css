@@ -75,5 +75,20 @@ img.make-it-fit {
 	left: 75%;
 	transform: rotate(7deg);
 }
+.pinboardSettings{
+	position: absolute;
+	top: 1%;
+	left: 0;
+	max-width: 2%;
+}
+.pinboardSettings img{
+	opacity: 0.5;
+	width: 100%;
+	height: 33%;
+
+}
+.pinboardSettings img:hover{
+	opacity: 1;
+}
 
 
