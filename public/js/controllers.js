@@ -9,7 +9,32 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
   /* Uploading with jQuery File Upload */
   function($scope, $rootScope, $routeParams, $location, cloudinary) {
 
-    $('#direct_upload_jquery').fadeIn(600);
+
+    var loc = location.href; 
+    var array = loc.split('/');
+    var lastsegment = array[array.length-1];
+    
+
+      var pinboards = ref.child("pinboards");
+      pinboards.orderByKey().equalTo(lastsegment).on("value" , function(snapshot){
+        var Post = snapshot.val();
+        if (Post!== null) {
+          snapshot.forEach(function(data) {
+            pinboard_ID = data.key(); 
+            console.log(pinboard_ID);
+            $('#direct_upload_jquery').fadeIn(600);
+
+          });
+          
+        }else{
+            $rootScope.$apply(function() {
+            $location.path('/');
+            console.log($location.path());
+          });
+        }
+      });
+
+    
 
 
     $scope.submit = function(){
@@ -39,9 +64,7 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
 
     }
 
-    var loc = location.href; 
-    var array = loc.split('/');
-    var lastsegment = array[array.length-1];
+    
 
 
     $scope.file = {};
