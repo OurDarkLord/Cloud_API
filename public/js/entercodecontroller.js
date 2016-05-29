@@ -14,7 +14,6 @@ EnterCodeControllers.controller('enterCodeCtrl', function($scope, $location, $ro
             console.log(pinboard_ID);
             $("#codevisible").fadeOut(600);
             setTimeout(function(){
-              $scope.teeest = "aaaaa";
 
               $rootScope.$apply(function() {
                 $location.path('/'+pinboard_ID);
