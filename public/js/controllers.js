@@ -2,7 +2,7 @@
 
 var ref = new Firebase('https://photopinwall.firebaseio.com/');
 /* Controllers */
-
+var $pinboard_ID;
 var photoAlbumControllers = angular.module('photoAlbumControllers', []);
 
 photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope', '$routeParams', '$location', 'cloudinary',
@@ -20,8 +20,7 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
         var Post = snapshot.val();
         if (Post!== null) {
           snapshot.forEach(function(data) {
-            pinboard_ID = data.key(); 
-            console.log(pinboard_ID);
+            $pinboard_ID = data.key(); 
             $('#direct_upload_jquery').fadeIn(600);
 
           });
@@ -43,7 +42,8 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
       }
       else if ($scope.titel != null ,$scope.beschrijving!= null) {
 
-        var PinboardDirectory  = ref.child("pinboards/" + $scope.pinboard_ID);
+        var PinboardDirectory  = ref.child("pinboards/" + $pinboard_ID);
+        console.log($pinboard_ID);
         PinboardDirectory.push({
           "titel" : $scope.titel,
           "beschrijving" : $scope.beschrijving, 
