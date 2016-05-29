@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="photoAlbumApp" ng-controller="photoUploadCtrlJQuery">
+<html lang="en" ng-app="photoAlbumApp" >
 	<head>
 		<title>PhotoPinWall</title>
 		<link rel="shortcut icon"
@@ -31,11 +31,13 @@
 		  <script src="js/animations.js"></script>
 		  <script src="js/controllers.js"></script>
 		  <script src="js/services.js"></script>
+		  <script src="js/entercodecontroller.js"></script>
 
 		
 		<meta charset="utf-8">
 	</head>
 	<body >
+		  
 		<div class="amazon">
      	<script type="text/javascript">
         	amzn_assoc_banner_id = "1EYSK0HB2RGHWPTKD6R2";
@@ -52,64 +54,10 @@
      </script>
      <script src="//z-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&Operation=GetScript&ID=OneJS&WS=1"></script>
     </div>
-		<div id="codevisible">
-			<h2>Enter the photopinwall code here</h2>
-			<input type="text" ng-model="textboxname"> 
-			</br>
-			</br>
-			<button type="button"  class="btn btn-primary" ng-click= "zoekpinboard()">go to pinboard</button>
-		</div>
-
-	
-		   <div id="direct_upload_jquery" >
-			    <h1>New Photo</h1>
-			    <p>You can also drag and drop an image file into the dashed area.</p>
-			    <form>
-			        <div class="form_line">
-			            <label path="title">Title:</label>
-			            <div class="form_controls">
-			                <input type="text" class="form-control" placeholder="Title"  ng-model="titel"/>
-			                <input type="text" class="form-control" placeholder="beschrijving" ng-model="beschrijving"/>
-			            </div>
-			        </div>
-			        <div class="form_line">
-			            <label>Image:</label>
-			            <div class="form_controls">
-			                <div class="upload_button_holder">
-			                    <input type="file" name="file" class="cloudinary_fileupload">
-			                </div>
-			            </div>
-			        </div>
-
-
-			    </form>
-			    <h2>Status</h2>
-			    <div class="file" >
-
-			            <h3>{{file.name}}</h3>
-			            <div class="status">{{file.status}}</div>
-			            <div class="progress-bar">
-			                <div class="progress" style="width: {{file.progress}}%" ng-init="progress=0"></div>
-			            </div>
-			            <div class="form_line">
-			                <div class="form_controls">
-			                    <div class="preview">
-			                        <img ngf-src="file.result.url || file">
-			                    </div>
-			                </div>
-			            </div>
-			        
-			    </div>
-			    <button type="button" class="btn btn-success" ng-click= "submit()">Submit</button> 
-			    <p>{{uploaderror}}</p>
-			</div>
-
-
+    <div class="content">
+		    <div ng-view class="view-frame"></div>
+	</div>
 		
-		<div id="done">
-			<h2>uploaded!</h2>
-		</div>
-
 
 		<a href="user/index.html" id="gofullsite"> go to the full site</a>
 

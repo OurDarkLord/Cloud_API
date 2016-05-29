@@ -1,5 +1,5 @@
 'use strict';
-var pinboard_ID;
+
 var ref = new Firebase('https://photopinwall.firebaseio.com/');
 /* Controllers */
 
@@ -9,24 +9,8 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
   /* Uploading with jQuery File Upload */
   function($scope, $rootScope, $routeParams, $location, cloudinary) {
 
-    $scope.zoekpinboard = function(){
-      var zoekname = $scope.textboxname;
-      var pinboards = ref.child("pinboards");
-      pinboards.orderByKey().equalTo(zoekname).on("value" , function(snapshot){
-        var Post = snapshot.val();
-        if (Post!== null) {
-          snapshot.forEach(function(data) {
-            pinboard_ID = data.key();
-            $("#codevisible").fadeOut(600);
-            setTimeout(function(){
-              $('#direct_upload_jquery').fadeIn(600);
-            }, 700);
-            
-          });
-          
-        };
-      });
-    }
+    $('#direct_upload_jquery').fadeIn(600);
+
 
     $scope.submit = function(){
       if ($scope.file.result.secure_url== "" ) {
@@ -34,7 +18,7 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
       }
       else if ($scope.titel != null ,$scope.beschrijving!= null) {
 
-        var PinboardDirectory  = ref.child("pinboards/" + pinboard_ID);
+        var PinboardDirectory  = ref.child("pinboards/" + $scope.pinboard_ID);
         PinboardDirectory.push({
           "titel" : $scope.titel,
           "beschrijving" : $scope.beschrijving, 
@@ -54,10 +38,16 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
        }     
 
     }
+
+    var loc = location.href; 
+    var array = loc.split('/');
+    var lastsegment = array[array.length-1];
+
+
     $scope.file = {};
 
     $scope.widget = $(".cloudinary_fileupload")
-      .unsigned_cloudinary_upload(cloudinary.config().upload_preset, {tags: 'myphotoalbum', context:'photo='}, {
+      .unsigned_cloudinary_upload(cloudinary.config().upload_preset, {tags: lastsegment, context:'photo='}, {
         // Uncomment the following lines to enable client side image resizing and validation.
         // Make sure cloudinary/processing is included the js file
         //disableImageResize: false,
@@ -90,6 +80,7 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
         $rootScope.photos = $rootScope.photos || [];
         data.result.context = {custom: {photo: $scope.title}};
         $scope.result = data.result;
+        console.log(data.result);
         var name = data.files[0].name;
         $scope.file.name = name;
         $scope.file.result = data.result;
@@ -99,4 +90,6 @@ photoAlbumControllers.controller('photoUploadCtrlJQuery', ['$scope', '$rootScope
           $scope.file.name = name;
           $scope.file.result = data.result;
         });
+
+      
   }]);

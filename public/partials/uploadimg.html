@@ -1,0 +1,54 @@
+<div id="posterframe">
+	
+		   <div id="direct_upload_jquery" >
+			    <h1>New Photo</h1>
+			    <p>You can also drag and drop an image file into the dashed area.</p>
+			    <form>
+			        <div class="form_line">
+			            <label path="title">Title:</label>
+			            <div class="form_controls">
+			                <input type="text" class="form-control" placeholder="Title"  ng-model="titel"/>
+			                <input type="text" class="form-control" placeholder="beschrijving" ng-model="beschrijving"/>
+			            </div>
+			        </div>
+			        <div class="form_line">
+			            <label>Image:</label>
+			            <div class="form_controls">
+			                <div class="upload_button_holder">
+			                    <input type="file" name="file" class="cloudinary_fileupload">
+			                </div>
+			            </div>
+			        </div>
+
+
+			    </form>
+			    <h2>Status</h2>
+			    <div class="file" >
+
+			            <h3>{{file.name}}</h3>
+			            <div class="status">{{file.status}}</div>
+			            <div class="progress-bar">
+			                <div class="progress" style="width: {{file.progress}}%" ng-init="progress=0"></div>
+			            </div>
+			            <div class="form_line">
+			                <div class="form_controls">
+			                    <div class="preview">
+			                        <img ngf-src="file.result.url || file">
+			                    </div>
+			                </div>
+			            </div>
+			        
+			    </div>
+			    <button type="button" class="btn btn-success" ng-click= "submit()">Submit</button> 
+			    <p>{{uploaderror}}</p>
+			</div>
+
+
+		
+		<div id="done">
+			<h2>uploaded!</h2>
+		</div>
+
+
+
+</div>
