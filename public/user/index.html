@@ -64,10 +64,9 @@
       			</div>
       			<div class="modal-body">
         		<p id="infoaantalfotos">aantal foto's = {{infoaantalfotos}}</p>
-			      <button  type="button" class="btn btn-success" id="infobekijkfotos" ng-click= 'pinboardbekijkfotos("{{infonaam}}")' > bekijk foto</button> </br>
+			      <button  type="button" class="btn btn-success" id="infobekijkfotos" ng-click= 'pinboardbekijkfotos()' > bekijk foto</button> </br>
 			      <button type="button" class="btn btn-success" id="bekijkpinwall" ng-click= 'bekijkpinwall()' > go to the pinwall</button></br>
 			      <button type="button" class="btn btn-success" id="deletepinwall" ng-click= 'deletepinwall()' > delete pinwall</button>
-				  <button type="button" class="btn btn-success" id="entireWall" ng-click= 'entireWall()' > show entire wall</button>
       			</div>
       			<div class="modal-footer">
         		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -89,9 +88,12 @@
 				</div>
 
 			</div>
-			<div ng-show="entirePinboard" class="entirePinboardweergeven">
-
-			</div>
+					<div ng-show="pinboardAlbumvisible" class="pinboardweergeven">
+						<div class="pinboardpictures"></div>
+						<div class="pinboardinfo">
+							<h1>enter code:{{infonaam}}</h1>
+						</div>
+					</div>
 			
 		</div>
 

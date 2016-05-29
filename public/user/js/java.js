@@ -163,11 +163,6 @@ $scope.deletepinwall = function () {
 	});
 }
 
-
-
-
-
-
 function addpinboardtodB(idpinboard, currentpinboards){
 	var pinboardbase = ref.child("pinboards");
 	var newpinboard = pinboardbase.child(idpinboard);
