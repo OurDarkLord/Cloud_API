@@ -12,7 +12,6 @@ EnterCodeControllers.controller('enterCodeCtrl', function($scope, $location, $ro
           snapshot.forEach(function(data) {
             pinboard_ID = data.key();
             console.log(pinboard_ID);
-            $scope.$apply();
             $("#codevisible").fadeOut(600);
             setTimeout(function(){
               $scope.teeest = "aaaaa";

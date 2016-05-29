@@ -17,7 +17,7 @@
 	</head>
 	<body ng-app="app" ng-controller="main">
 		
-	  <nav class="navbar navbar-default">
+	  <nav class="navbar navbar-default" ng-show="navbarVisible">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -34,7 +34,7 @@
 		        <li  class="" id="LiPinboards"><a href="#" ng-click= "pinboardsshow()">My pinboards</a></li>
 		        <li  class="" id="LiHelp"><a href="#" ng-click= "helpshow()">Help</a></li>
 		        <li  class="" id="LiInfo"><a href="#" ng-click= "infoshow()">Info</a></li>
-		        <li  class="" id="LiTest"><a href="#" ng-click= "testnavshow()">Api-Corner</a></li>
+		        <li  class="" id="LiTest"><a href="#" ng-click= "testnavshow()">test corner</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 			      <li  ><a href="#" ng-click= "LogMeIn()" id="loginName">Log in</a></li>
@@ -55,23 +55,25 @@
 				<div class="container">
 
  				 <!-- Modal -->
-  				<div class="modal fade" id="myModal" role="dialog">
-    			<div class="modal-dialog">
-				<div class="modal-content">
-      			<div class="modal-header">
-        		<button type="button" class="close" data-dismiss="modal"></button>
-        		<p class="modal-title" id="infonaam">{{infonaam}}</p>
-      			</div>
-      			<div class="modal-body">
-        		<p id="infoaantalfotos">aantal foto's = {{infoaantalfotos}}</p>
-			      <button  type="button" class="btn btn-success" id="infobekijkfotos" ng-click= 'pinboardbekijkfotos("{{infonaam}}")' > bekijk foto</button> </br>
-			      <button type="button" class="btn btn-success" id="bekijkpinwall" ng-click= 'bekijkpinwall()' > go to the pinwall</button></br>
-			      <button type="button" class="btn btn-success" id="deletepinwall" ng-click= 'deletepinwall()' > delete pinwall</button>
-				  <button type="button" class="btn btn-success" id="entireWall" ng-click= 'entireWall()' > show entire wall</button>
-      			</div>
-      			<div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      			</div>
+	  				<div class="modal fade" id="myModal" role="dialog">
+		    			<div class="modal-dialog">
+							<div class="modal-content">
+				      			<div class="modal-header">
+					        		<button type="button" class="close" data-dismiss="modal"></button>
+					        		<p class="modal-title" id="infonaam">{{infonaam}}</p>
+				      			</div>
+				      			<div class="modal-body">
+					        		<p id="infoaantalfotos">aantal foto's = {{infoaantalfotos}}</p>
+								      <button data-dismiss="modal" type="button" class="btn btn-success" id="infobekijkfotos" ng-click= 'pinboardbekijkfotos()' > Go to photo's</button> </br>
+								      <button data-dismiss="modal" type="button" class="btn btn-success" id="bekijkpinwall" ng-click= 'bekijkpinwall()' > Go to the pinwall</button></br>
+								      <button type="button" class="btn btn-success" id="deletepinwall" ng-click= 'deletepinwall()' > Delete pinwall</button>
+			      				</div>
+				      			<div class="modal-footer">
+				        			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      			</div>
+	    					</div>
+	    				</div>	
+    				</div>
     			</div>
 			</div>
 			<div ng-show="pinboardvisible" class="pinboardweergeven">
@@ -87,10 +89,12 @@
 					<img src="images/zoom+.png" ng-click= 'zoomin()'></br>
 					<img src="images/zoom-.png" ng-click= 'zoomout()'>
 				</div>
-
 			</div>
-			<div ng-show="entirePinboard" class="entirePinboardweergeven">
-
+			<div ng-show="pinboardAlbumvisible" class="pinboardweergeven">
+				<div class="allpinboardpictures"></div>
+				<div class="pinboardinfo">
+					<h1>enter code:{{infonaam}}</h1>
+				</div>
 			</div>
 			
 		</div>
@@ -109,8 +113,11 @@
 		
 		
 		<div ng-show="testvisible">
-			<button  ng-click= "getApi()">get Names and Email</button>
+			<button  ng-click= "adduser()">add user</button>
 			
+			<p>{{data}}</p>
+
+			Enter your name: <input type="text" id="name" ></input> 
 		</div>
 
 		<script src="js/java.js"></script>
