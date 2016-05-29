@@ -10,6 +10,11 @@ var $IDphotoremove = 0;
 var $IDcurrentPinwall;
 var RemovePinboard;
 
+//voor de get api gedeelte
+var json;
+var names = [];
+var achternamen = [];
+var mailadressen = [];
 
 $(function()
 	{ 
@@ -51,7 +56,7 @@ window.fbAsyncInit = function() {
 
 //************************************************
 
-app.controller("main",function($scope){
+app.controller("main",function($scope, $http){
 	$scope.testvisible = false;
 	$scope.homevisible = true;
 	$scope.infovisible = false;
@@ -347,17 +352,27 @@ $scope.pinboardbekijkfotos = function(infonaam){
 }
 //**************************************************************************
 
-// test *****************************************
-$scope.data = "test angular";
-$scope.adduser = function(){
-		
-		var pad = ref.child("pinboards/"+ postID);
-		pad.orderByKey().equalTo("Fee7v").on("value", function(snapshot) {
-		  console.log(snapshot.val());
-		});
-	};
 
+//************************* GetApi ***************************************************
+$http.get("https://photopinwall.firebaseio.com/users.json")
+            .success(function(posts){
+            	$scope.getApi = function(){
+                json = posts;
+                 var count = Object.keys(json).length;
+                console.log("Total users: " + count);
 
+                   $.each(Object(json), function(index, users) {
+                   	mailadressen = users.mail;
+                   	achternamen = users.last_name;
+                   	names = users.name;
+                   	console.log(names);
+                   	console.log(achternamen);
+                   	console.log(mailadressen);
+					}); 
+
+               
+            }
+            })
 
 //**********************************
 

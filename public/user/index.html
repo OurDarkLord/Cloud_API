@@ -34,7 +34,7 @@
 		        <li  class="" id="LiPinboards"><a href="#" ng-click= "pinboardsshow()">My pinboards</a></li>
 		        <li  class="" id="LiHelp"><a href="#" ng-click= "helpshow()">Help</a></li>
 		        <li  class="" id="LiInfo"><a href="#" ng-click= "infoshow()">Info</a></li>
-		        <li  class="" id="LiTest"><a href="#" ng-click= "testnavshow()">test corner</a></li>
+		        <li  class="" id="LiTest"><a href="#" ng-click= "testnavshow()">Api-Corner</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 			      <li  ><a href="#" ng-click= "LogMeIn()" id="loginName">Log in</a></li>
@@ -109,11 +109,8 @@
 		
 		
 		<div ng-show="testvisible">
-			<button  ng-click= "adduser()">add user</button>
+			<button  ng-click= "getApi()">get Names and Email</button>
 			
-			<p>{{data}}</p>
-
-			Enter your name: <input type="text" id="name" ></input> 
 		</div>
 
 		<script src="js/java.js"></script>
