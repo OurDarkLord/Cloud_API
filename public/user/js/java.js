@@ -1,14 +1,14 @@
 var ref = new Firebase('https://photopinwall.firebaseio.com/');
-var refPinboard = new Firebase('https://photopinwall.firebaseio.com/pinboards/');
-
-
 var app = angular.module("app", []);
 var postID;
 var pinboardsarrey = [];
 var $IDphoto = 0;
 var $IDphotoremove = 0;
 var $IDcurrentPinwall;
-var RemovePinboard;
+var $widthPhotoPinboard = 35;
+var $heightPhotoPinboard = 60;
+var $fontSizeTitelFoto = 35;
+var $allPics = false;
 
 //voor de get api gedeelte
 var json;
@@ -61,6 +61,7 @@ app.controller("main",function($scope, $http){
 	$scope.homevisible = true;
 	$scope.infovisible = false;
 	$scope.pinboardsvisible = false;
+	$scope.navbarVisible = true;
 
 
 //************************* navbar ***************************************************
@@ -74,18 +75,9 @@ app.controller("main",function($scope, $http){
 		document.getElementById("LiPinboards").className = "active";
 		getpinboards($scope);
 		$scope.pinboardvisible = false;
+		$scope.pinboardAlbumvisible =false;
 		$scope.pinboardsvisible = true;
 		$scope.pinboardsettingsvisible = true;
-
-
-		var usersPinboard = new Firebase('https://photopinwall.firebaseio.com/users/' + postID + '/pinboard');
-		usersPinboard.on("value", function(snapshot) {
-			snapshot.forEach(function(pinboardID) {
-				var key = pinboardID.key();
-				var val = pinboardID.val();
-				console.log(key + val);
-			});
-		});
 
 	}
 	$scope.helpshow = function(){
@@ -146,8 +138,33 @@ $scope.addpinboard = function(){
 	}else{
 		alert("you can have only 5 pinboards");
 	}
-
 }
+
+//*********************Delete pinboard****************************
+$scope.deletepinwall = function () {
+	console.log($IDcurrentPinwall);
+
+	var deletePinwall = ref.child("pinboards/" + $IDcurrentPinwall);
+	deletePinwall.remove();
+
+	var temp1 = ref.child("users/" + postID + "/pinboard/");
+	temp1.on("value", function(snapshot){
+		snapshot.forEach(function(data){
+			var key = data.key();
+			console.log(key);
+			var val = data.val();
+			console.log(val);
+			if (val.pinboard_ID == $IDcurrentPinwall){
+				console.log("parentdelete:" + key);
+				var deletePinwall = ref.child("users/" + postID +"/pinboard/" + key);
+				deletePinwall.remove();
+			}
+		});
+	});
+}
+
+
+
 
 
 
@@ -155,7 +172,7 @@ function addpinboardtodB(idpinboard, currentpinboards){
 	var pinboardbase = ref.child("pinboards");
 	var newpinboard = pinboardbase.child(idpinboard);
 	newpinboard.update({
-		"user_ID" : postID,
+		"user_ID" : postID
 	});
 	var userpinboards = ref.child("users/"+postID+"/pinboard");
 
@@ -170,21 +187,6 @@ function addpinboardtodB(idpinboard, currentpinboards){
 		"totalpinboards": currentpinboards 
 	});
 }
-
-//************************ Delete pinwall*************************
-$scope.deletepinwall = function(){
-	console.log($IDcurrentPinwall);
-
-	RemovePinboard = refPinboard.child($IDcurrentPinwall);
-	RemovePinboard.remove();
-	getpinboards($scope);
-}
-
-//***********************Show entire wall***************************
-$scope.entireWall = function() {
-	$scope.pinboardsettingsvisible = false;
-}
-
 function checkID(idpinboard){
 	var pinboards = ref.child("pinboards");
 	pinboards.orderByKey().equalTo(idpinboard).on("value" , function(snapshot){
@@ -272,20 +274,49 @@ $scope.bekijkpinwall = function(){
 	$scope.pinboardsettingsvisible = false;
 	$scope.pinboardvisible = true;
 	console.log($IDcurrentPinwall);
+	$allPics = false;
+	loadAllPics();
+}
 
+//************************************laad de foto's***********************
+$scope.pinboardbekijkfotos = function(){
+	deleteAllPics();
+	$scope.pinboardsettingsvisible = false;
+	$scope.pinboardAlbumvisible = true;
+	console.log($IDcurrentPinwall);
+	$allPics = true;
+	loadAllPics();
+}
+
+function deleteAllPics() {
+	$("img").remove(".allPictures");
+}
+//**************************************************************************
+function viewAllPics(titel, beschrijving, url) {
+	var $img = document.createElement("img");
+	$(function(){
+		$($img).addClass('allPictures');
+	});
+	$img.src = url;
+	$img.style.cssText = 'float: left;  height: 300px; margin: 20px 10px 20px 10px;';
+
+	$('.allpinboardpictures').append($img);
+
+
+
+}
+//*****************************laad al de foto's**********************************************
+function loadAllPics(){
 	var currentpinboard = ref.child("pinboards/"+ $IDcurrentPinwall);
 	currentpinboard.on("child_added", function(snapshot) {
 		var newPost = snapshot.val();
 		if (newPost.url != null) {
-			addPhotoToWall(newPost.titel,newPost.beschrijving,newPost.url);
+			if ($allPics == false) addPhotoToWall(newPost.titel,newPost.beschrijving,newPost.url);
+			else viewAllPics(newPost.titel, newPost.beschrijving,newPost.url);
 		};
 	});
 }
-
-
-// Popup ***************************************************
-
-
+//********************* foto op pinboard toevoegen ***************************************************
 
 function addPhotoToWall(titel, beschrijving, url){
 	var $afbeelding = document.createElement("div");
@@ -294,9 +325,10 @@ function addPhotoToWall(titel, beschrijving, url){
 	var randomnumber = Math.floor((Math.random() * 20) - 10); 
 	var $rotatiepic = 360 + randomnumber;
 
-	$afbeelding.style.cssText = 'width: 35%; height: 60%; position: absolute; left: 35%; top:20%; background-color: white; transform: rotate('+$rotatiepic+'deg);  box-shadow: 6px 6px 25px #000000; display: none;';
+	$afbeelding.style.cssText = 'width: '+$widthPhotoPinboard+'%; height: +'+$heightPhotoPinboard+'%; position: absolute; left: '+(52-($widthPhotoPinboard/2))+'%; top:'+(50-($heightPhotoPinboard/2))+'%; background-color: white; transform: rotate('+$rotatiepic+'deg);  box-shadow: 6px 6px 25px #000000; display: none;';
+
 	$('.pinboardpictures').append($afbeelding);
-	
+
 	var $textbox = document.createElement("div");
 
 	$textbox.id= 'textboxImage' + $IDphoto ;
@@ -304,18 +336,17 @@ function addPhotoToWall(titel, beschrijving, url){
 	$("#afbeeldingpinboard" + $IDphoto).append($textbox);
 
 	var $header = $("<h2>").text(titel);
-
-	$("#afbeeldingpinboard" + $IDphoto).append($header);
-	var $comment = $("<p>").text(beschrijving);
 	
-	$("#afbeeldingpinboard" + $IDphoto).append($comment);
+	$("#textboxImage" + $IDphoto).append($header);
+	var $comment = $("<p>").text(beschrijving);
+	$("#textboxImage" + $IDphoto).append($comment);
 
 
 	
 	
 	var $img = document.createElement("img");
 	$img.src = url;
-	$img.style.cssText = 'position: absolute; max-width: 90%; max-height: 70%; left: 5%; right: 5%; top: 25%; margin: auto;';
+	$img.style.cssText = 'position: absolute; width: 90%; height: 70%; left: 5%; right: 5%; top: 25%; margin: auto;';
 	$("#afbeeldingpinboard" + $IDphoto).append($img);
 
 	$("#afbeeldingpinboard" + $IDphoto).fadeIn(800);
@@ -341,16 +372,44 @@ function removeAllPicsFromPinboard(){
 		console.log(i);
 		removePicFromPinboard();
 		
+	};
+	$IDphotoremove = 0;
+	$IDphoto=0;
+
 }
 
+//***************************fullscreen bij het bekijken van de pinboard*********************************
 
+$scope.fullscreen = function(){
+	var imageFullScreen = document.getElementById('fullscreenImg');
+	if ($scope.navbarVisible) {
+		$scope.navbarVisible = false;
+		imageFullScreen.src = "images/nofullscreen.png";
+	}else{
+		$scope.navbarVisible = true;
+		imageFullScreen.src = "images/fullscreen.png";
+	}
+	
+}
+//*********************************zoom in **********************
+$scope.zoomin = function(){
+	removeAllPicsFromPinboard();
+	$widthPhotoPinboard += 5;
+	$heightPhotoPinboard +=5;
+	$fontSizeTitelFoto += 5;
+
+	loadAllPics();
+}
+//*********************************zoom out **********************
+$scope.zoomout = function(){
+	removeAllPicsFromPinboard();
+	$widthPhotoPinboard -= 5;
+	$heightPhotoPinboard -=5;
+	$fontSizeTitelFoto -= 5;
+	loadAllPics();
+}
 //************************************************************
-//************************************laad de foto's***********************
 
-$scope.pinboardbekijkfotos = function(infonaam){
-	console.log(infonaam);
-}
-//**************************************************************************
 
 
 //************************* GetApi ***************************************************
