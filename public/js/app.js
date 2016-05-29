@@ -1,7 +1,5 @@
 'use strict';
-var ref = new Firebase('https://photopinwall.firebaseio.com/');
-var pinboard_ID = null;
-var lastsegment;
+
 
 /* App Module */
 var photoAlbumApp = angular.module('photoAlbumApp', [
@@ -14,8 +12,8 @@ var photoAlbumApp = angular.module('photoAlbumApp', [
 ]);
 
 
-//*******************************nog in ontwikkeling **************************************
-photoAlbumApp.controller('mainapp', function($scope,$route, $rootScope, $location ){
+/*/*******************************nog in ontwikkeling *************************************
+photoAlbumApp.controller('mainapp', function($scope,$route, $rootScope, $location, $routeProvider){
       var loc = location.href; 
       var array = loc.split('/');
       lastsegment = array[array.length-1];
@@ -30,25 +28,20 @@ photoAlbumApp.controller('mainapp', function($scope,$route, $rootScope, $locatio
             pinboard_ID = data.key(); 
             console.log(pinboard_ID);
 
-            //$location.path();
-            //$route.reload();
-
-            //$routeParams.pinboard_ID;
-
-            // $rootScope.$on('$routeUpdate', function() {  $route.reload(); });
-            
+              $rootScope.$apply(function() {
+                $location.path('/upload/'+pinboard_ID);
+                console.log($location.path());
+              });
 
           });
           
         };
       });
 
-    
 
-});
+});*/
 photoAlbumApp.config(['$routeProvider',
   function ($routeProvider) {
-
 
       $routeProvider.when('/', {
           templateUrl: 'partials/entercode.html',
@@ -57,18 +50,5 @@ photoAlbumApp.config(['$routeProvider',
           templateUrl: 'partials/uploadimg.html',
           controller: 'photoUploadCtrlJQuery'
         });
-
-
-   /*   $routeProvider.when('/', {
-          templateUrl: 'partials/entercode.html',
-          controller: 'enterCodeCtrl'
-        })
-        .otherwise({
-            templateUrl: 'partials/page.html',
-            controller: 'mainapp'
-        });
-
-   */
-
     
   }]);
