@@ -10,12 +10,6 @@ var $heightPhotoPinboard = 60;
 var $fontSizeTitelFoto = 35;
 var $allPics = false;
 
-//voor de get api gedeelte
-var json;
-var names = [];
-var achternamen = [];
-var mailadressen = [];
-
 $(function()
 	{ 
 		$(".nav .dropdown").hover(function(arg)
@@ -56,7 +50,7 @@ window.fbAsyncInit = function() {
 
 //************************************************
 
-app.controller("main",function($scope, $http){
+app.controller("main",function($scope){
 	$scope.testvisible = false;
 	$scope.homevisible = true;
 	$scope.infovisible = false;
@@ -75,7 +69,7 @@ app.controller("main",function($scope, $http){
 		document.getElementById("LiPinboards").className = "active";
 		getpinboards($scope);
 		$scope.pinboardvisible = false;
-		$scope.pinboardAlbumvisible =false;
+		$scope.pinboardAlbumvisible  = false;
 		$scope.pinboardsvisible = true;
 		$scope.pinboardsettingsvisible = true;
 
@@ -141,27 +135,27 @@ $scope.addpinboard = function(){
 }
 
 //*********************Delete pinboard****************************
-$scope.deletepinwall = function () {
-	console.log($IDcurrentPinwall);
+	$scope.deletepinwall = function () {
+		console.log($IDcurrentPinwall);
 
-	var deletePinwall = ref.child("pinboards/" + $IDcurrentPinwall);
-	deletePinwall.remove();
+		var deletePinwall = ref.child("pinboards/" + $IDcurrentPinwall);
+		deletePinwall.remove();
 
-	var temp1 = ref.child("users/" + postID + "/pinboard/");
-	temp1.on("value", function(snapshot){
-		snapshot.forEach(function(data){
-			var key = data.key();
-			console.log(key);
-			var val = data.val();
-			console.log(val);
-			if (val.pinboard_ID == $IDcurrentPinwall){
-				console.log("parentdelete:" + key);
-				var deletePinwall = ref.child("users/" + postID +"/pinboard/" + key);
-				deletePinwall.remove();
-			}
+		var temp1 = ref.child("users/" + postID + "/pinboard/");
+		temp1.on("value", function (snapshot) {
+			snapshot.forEach(function (data) {
+				var key = data.key();
+				console.log(key);
+				var val = data.val();
+				console.log(val);
+				if (val.pinboard_ID == $IDcurrentPinwall) {
+					console.log("parentdelete:" + key);
+					var deletePinwall = ref.child("users/" + postID + "/pinboard/" + key);
+					deletePinwall.remove();
+				}
+			});
 		});
-	});
-}
+	}
 
 function addpinboardtodB(idpinboard, currentpinboards){
 	var pinboardbase = ref.child("pinboards");
@@ -271,10 +265,11 @@ $scope.bekijkpinwall = function(){
 	console.log($IDcurrentPinwall);
 	$allPics = false;
 	loadAllPics();
+
 }
 
 //************************************laad de foto's***********************
-$scope.pinboardbekijkfotos = function(){
+$scope.pinboardbekijkfotos = function () {
 	deleteAllPics();
 	$scope.pinboardsettingsvisible = false;
 	$scope.pinboardAlbumvisible = true;
@@ -286,28 +281,27 @@ $scope.pinboardbekijkfotos = function(){
 function deleteAllPics() {
 	$("img").remove(".allPictures");
 }
+
 //**************************************************************************
 function viewAllPics(titel, beschrijving, url) {
 	var $img = document.createElement("img");
-	$(function(){
+	$(function () {
 		$($img).addClass('allPictures');
 	});
 	$img.src = url;
 	$img.style.cssText = 'float: left;  height: 300px; margin: 20px 10px 20px 10px;';
 
 	$('.allpinboardpictures').append($img);
-
-
-
 }
+
 //*****************************laad al de foto's**********************************************
 function loadAllPics(){
 	var currentpinboard = ref.child("pinboards/"+ $IDcurrentPinwall);
 	currentpinboard.on("child_added", function(snapshot) {
 		var newPost = snapshot.val();
 		if (newPost.url != null) {
-			if ($allPics == false) addPhotoToWall(newPost.titel,newPost.beschrijving,newPost.url);
-			else viewAllPics(newPost.titel, newPost.beschrijving,newPost.url);
+			if ($allPics == false) addPhotoToWall(newPost.titel, newPost.beschrijving, newPost.url);
+			else viewAllPics(newPost.titel, newPost.beschrijving, newPost.url);
 		};
 	});
 }
@@ -321,9 +315,8 @@ function addPhotoToWall(titel, beschrijving, url){
 	var $rotatiepic = 360 + randomnumber;
 
 	$afbeelding.style.cssText = 'width: '+$widthPhotoPinboard+'%; height: +'+$heightPhotoPinboard+'%; position: absolute; left: '+(52-($widthPhotoPinboard/2))+'%; top:'+(50-($heightPhotoPinboard/2))+'%; background-color: white; transform: rotate('+$rotatiepic+'deg);  box-shadow: 6px 6px 25px #000000; display: none;';
-
 	$('.pinboardpictures').append($afbeelding);
-
+	
 	var $textbox = document.createElement("div");
 
 	$textbox.id= 'textboxImage' + $IDphoto ;
@@ -405,28 +398,17 @@ $scope.zoomout = function(){
 }
 //************************************************************
 
+// test *****************************************
+$scope.data = "test angular";
+$scope.adduser = function(){
+		
+		var pad = ref.child("pinboards/"+ postID);
+		pad.orderByKey().equalTo("Fee7v").on("value", function(snapshot) {
+		  console.log(snapshot.val());
+		});
+	};
 
 
-//************************* GetApi ***************************************************
-$http.get("https://photopinwall.firebaseio.com/users.json")
-            .success(function(posts){
-            	$scope.getApi = function(){
-                json = posts;
-                 var count = Object.keys(json).length;
-                console.log("Total users: " + count);
-
-                   $.each(Object(json), function(index, users) {
-                   	mailadressen = users.mail;
-                   	achternamen = users.last_name;
-                   	names = users.name;
-                   	console.log(names);
-                   	console.log(achternamen);
-                   	console.log(mailadressen);
-					}); 
-
-               
-            }
-            })
 
 //**********************************
 
