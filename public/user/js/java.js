@@ -51,9 +51,9 @@ window.fbAsyncInit = function() {
 //************************************************
 
 app.controller("main",function($scope){
-	$scope.testvisible = false;
 	$scope.homevisible = true;
 	$scope.infovisible = false;
+	$scope.helpvisible = false;
 	$scope.pinboardsvisible = false;
 	$scope.navbarVisible = true;
 
@@ -77,6 +77,7 @@ app.controller("main",function($scope){
 	$scope.helpshow = function(){
 		nonactiven();
 		document.getElementById("LiHelp").className = "active";
+		$scope.helpvisible = true;
 	}
 	$scope.infoshow = function(){
 		nonactiven();
@@ -88,20 +89,14 @@ app.controller("main",function($scope){
         	loginFB(response);
         },{scope: 'email'})
     }
-    $scope.testnavshow = function(){
-        nonactiven();
-		document.getElementById("LiTest").className = "active";
-		$scope.testvisible= true;
-    }
 
     function nonactiven(){
 	document.getElementById("LiHome").className = "";
 	document.getElementById("LiPinboards").className = "";
 	document.getElementById("LiHelp").className = "";
 	document.getElementById("LiInfo").className = "";
-	document.getElementById("LiTest").className = "";
-	$scope.testvisible = false;
 	$scope.homevisible = false;
+	$scope.helpvisible = false;
 	$scope.infovisible = false;
 	$scope.pinboardsvisible = false;
 	$scope.infopinboard =false;
