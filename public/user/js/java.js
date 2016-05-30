@@ -329,7 +329,7 @@ function addPhotoToWall(titel, beschrijving, url){
 	
 	var $img = document.createElement("img");
 	$img.src = url;
-	$img.style.cssText = 'position: absolute; width: 90%; height: 70%; left: 5%; right: 5%; top: 25%; margin: auto;';
+	$img.style.cssText = 'position: absolute; max-width: 90%; height: 70%; left: 5%; right: 5%; top: 25%; margin: auto;';
 	$("#afbeeldingpinboard" + $IDphoto).append($img);
 
 	$("#afbeeldingpinboard" + $IDphoto).fadeIn(800);
